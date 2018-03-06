@@ -1,0 +1,2 @@
+class TicketIsExitsException(Exception):
+    pass
