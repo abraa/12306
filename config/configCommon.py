@@ -10,7 +10,7 @@ saleStopTime = "23:00:00"
 rushRefreshMinTimeIntval = 2000
 rushRefreshMaxTimeIntval = 3600000
 rushRefreshTimeIntval = 100
-poolSize = 2
+poolSize = 2                        #线程数量
 
 RS_SUC = 0
 RS_TIMEOUT = 1

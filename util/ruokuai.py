@@ -7,7 +7,7 @@ class RClient(object):
 
     def __init__(self, username, password):
         self.username = username
-        self.password = md5(password).hexdigest()
+        self.password = md5(password.encode(encoding="utf-8")).hexdigest()
         self.soft_id = '98038'
         self.soft_key = '452892734749418fbb74a890016eeab6'
         self.base_params = {
@@ -50,7 +50,7 @@ class RClient(object):
 
 if __name__ == '__main__':
     pass
-    # rc = RClient('931128603', '',)
-    # im = open('tkcode', 'rb').read()
+    # rc = RClient('abraa123', '')
+    # im = open('./captcha-image.jpg', 'rb').read()
     # print(rc.rk_create(im, 6113))
 

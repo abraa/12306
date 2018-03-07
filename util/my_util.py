@@ -2,15 +2,20 @@
 import configparser
 import json
 import os
+import smtplib
+from email.header import Header
+from email.mime.text import MIMEText
+
 from PIL import Image
-import util
 
-
-# 读取配置文件 {section: {key: value}, ...}
+from config.ticketConf import configs
 from exception.PassengerUserException import PassengerUserException
+from util import httpClient
+from util.ruokuai import RClient
 
 
 def read_conf(filename):
+    # 读取配置文件 {section: {key: value}, ...}
     conf = configparser.ConfigParser()
     res = {}
     try:
@@ -64,11 +69,18 @@ def get_rand_code(is_auto_code, file_path=None):
     try:
         # 是否自动登录 -- 自动打码
         if is_auto_code:
-            # 检查余额
-            # 调用接口返回验证码值
-            # TODO...
-            code = ''
-            return code
+            # 调用接口返回验证码值 (Ruokuai接口)
+            rc = RClient(configs['ruokuai_account']["username"], configs['ruokuai_account']["pwd"])
+            im = open(file_path, 'rb').read()
+            Result = rc.rk_create(im, 6113)
+            if "Result" in Result:
+                return codexy(offset_str=",".join(list(Result["Result"])), is_raw_input=False)
+            else:
+                if "Error" in Result and Result["Error"]:
+                    print("RClient.Error: ")
+                    print(Result["Error"])
+                    # raise Exception(Result["Error"])
+            return ""
         else:
             img = Image.open(file_path)
             img.show()
@@ -125,7 +137,7 @@ def codexy(offset_str=None, is_raw_input=True):
 
 # 生成车站中文:简称对应表
 def station_name(file='./station_name'):
-    res = util.httpClient().get(
+    res = httpClient.httpClient().get(
         'https://kyfw.12306.cn/otn/resources/js/framework/station_name.js?station_version=1.9047')
     result = res.split("'")[1]  # 去掉引号前后.只保留内容
     # result = '@bjb|北京北|VAP|beijingbei|bjb|0@bjd|北京东|BOP|beijingdong|bjd|1@bji|北京|BJP|beijing|bj|2@bjn|北京南|VNP|beijingnan|bjn|3'
@@ -193,6 +205,21 @@ def get_passenger_ticket_str(user_info, set_type):
     return passengerTicketStrList, oldPassengerStr
 
 
-def send_email(to_email, subject, content, configs):
-    pass
+def send_email(to_email, subject, content, configs, from_email=None):
+    if from_email is None:
+        from_email = configs['username']
+    message = MIMEText(content, 'html', 'utf-8')
+    message['From'] = Header(from_email, 'utf-8')
+    message['To'] = Header(to_email, 'utf-8')
+    message['Subject'] = Header(subject, 'utf-8')
+    try:
+        smtpObj = smtplib.SMTP_SSL()
+        smtpObj.connect(configs['host'], configs['port'])
+        smtpObj.login(configs['username'], configs['password'])
+        smtpObj.sendmail(from_email, to_email, message.as_string())
+        smtpObj.close()
+        print("邮件发送成功")
+    except smtplib.SMTPException:
+        print("Error: 无法发送邮件")
+
 
