@@ -208,6 +208,7 @@ def get_passenger_ticket_str(user_info, set_type):
 def send_email(to_email, subject, content, configs, from_email=None):
     if from_email is None:
         from_email = configs['username']
+
     message = MIMEText(content, 'html', 'utf-8')
     message['From'] = Header(from_email, 'utf-8')
     message['To'] = Header(to_email, 'utf-8')
@@ -223,3 +224,6 @@ def send_email(to_email, subject, content, configs, from_email=None):
         print("Error: 无法发送邮件")
 
 
+send_email(configs['to_email'], '订票成功',
+                                   "恭喜您订票成功，订单号为：{0}, 请立即打开浏览器登录12306，访问‘未完成订单’，在30分钟内完成支付！".format(1),
+                                   configs['email_conf'])

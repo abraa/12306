@@ -35,7 +35,7 @@ class CDNProxy:
                 url = self.urlConf["cdn_host"]["req_url"]
                 data = {"host": self.host, "lintType": "电信,多线,联通,移动"}
                 rep = self.httpClint.post(url, data, timeout=self.timeout, headers=self.headers)
-                city_re = re.compile(r"<li id=\"(\S+)\" class=\"PingListCent PingRLlist")
+                city_re = re.compile(r"<div id=\"(\S+)\" class=\"row listw tc")
                 self.city_list = re.findall(city_re, rep)
                 if self.city_list:
                     print(self.city_list)
@@ -64,7 +64,7 @@ class CDNProxy:
                         "encode": "Eije8XUjdz7r0Jdr2zC01MpBcD3ObICD",
                         "checktype": 0}
 
-                param = {'timeout': self.timeout, 'headers':self.headers}
+                param = {'timeout': self.timeout, 'headers': self.headers}
                 future = executor.submit(httpClient().post, url, data, **param)
                 future_tasks.add(future)
             try:

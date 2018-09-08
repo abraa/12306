@@ -70,6 +70,7 @@ class httpClient(object):
             print('HTTPError: ')
             print(e.code())
             print(e.read().decode('utf-8'))
+            exit(e.code())
         except socket.timeout as e:
             return ""
         return html
