@@ -123,7 +123,7 @@ class Votes(object):
             result = self._send(urlconf=select_url)
             value = result['data']
             if not value:
-                print(u'{0}-{1} 车次坐席查询为空...'.format(self.configs['set']['from_station'], self.configs['set']['to_station']))
+                print('{0}-{1} 车次坐席查询为空...'.format(self.configs['set']['from_station'], self.configs['set']['to_station']))
             else:
                 if value['result']:
                     # 2.排除不在选择内的此次
@@ -136,12 +136,12 @@ class Votes(object):
                                 if is_ticket_pass != '' and is_ticket_pass != '无' and ticket_info[
                                     3] in configs['set']['station_trains'] and is_ticket_pass != '*':  # 过滤有效目标车次 station_trains
                                     train_no = ticket_info[3]                        # 车次
-                                    print(u'车次: ' + train_no + ' 始发车站: ' + self.configs['set']['from_station'] + ' 终点站: ' +
+                                    print('车次: ' + train_no + ' 始发车站: ' + self.configs['set']['from_station'] + ' 终点站: ' +
                                           self.configs['set']['to_station'] + ':' + ticket_info[self.seat[j]['seat']])
                                     if train_no in self.ticket_black_list and (                      # 检查黑名单是否过期
                                             datetime.datetime.now() - self.ticket_black_list[
                                         train_no]).seconds / 60 < int(self.ticket_black_list_time):
-                                        print(u"该车次{} 正在被关小黑屋，跳过此车次".format(train_no))
+                                        print("该车次{} 正在被关小黑屋，跳过此车次".format(train_no))
                                         break
                                     result.append({'secretStr': ticket_info[0], 'train_no': train_no, 'seat': j,
                                                    'from_station': self.configs['set']['from_station'],
@@ -180,10 +180,10 @@ class Votes(object):
                 submitResult = self._send(self.confUrl["submit_station_url"], data)
                 if 'data' in submitResult and submitResult['data']:
                     if submitResult['data'] == 'N':
-                        print(u'出票成功')
+                        print('出票成功')
                         return submitResult, result2
                     else:
-                        print(u'出票失败')
+                        print('出票失败')
                 elif 'messages' in submitResult and submitResult['messages']:
                     print('ticketIsExitsException : ' + submitResult['messages'][0])
 
@@ -214,8 +214,8 @@ class Votes(object):
             elif 'messages' in jsonData and jsonData['messages']:
                 print(jsonData['messages'][0])
             else:
-                print(u"未查找到常用联系人")
-                raise PassengerUserException(u"未查找到常用联系人,请先添加联系人在试试")
+                print("未查找到常用联系人")
+                raise PassengerUserException("未查找到常用联系人,请先添加联系人在试试")
 
     # 提交订单前检查接口
     def checkOrderInfo(self, token, submit_station, user_info=None):
@@ -287,24 +287,24 @@ class Votes(object):
                 countT = getQueueCountResult["data"]["countT"]
                 if int(countT) is 0:
                     if int(ticket_split) < len(self.user_info):
-                        print(u"当前余票数小于乘车人数，放弃订票")
+                        print("当前余票数小于乘车人数，放弃订票")
                     else:
-                        print(u"排队成功, 当前余票还剩余: {0} 张".format(ticket_split))
+                        print("排队成功, 当前余票还剩余: {0} 张".format(ticket_split))
                         return True
                 else:
-                    print(u"当前排队人数: {1} 当前余票还剩余:{0} 张，继续排队中".format(ticket_split, countT))
+                    print("当前排队人数: {1} 当前余票还剩余:{0} 张，继续排队中".format(ticket_split, countT))
             else:
-                print(u"排队发现未知错误{0}，将此列车 {1}加入小黑屋".format(getQueueCountResult, submit_station['train_no']))
+                print("排队发现未知错误{0}，将此列车 {1}加入小黑屋".format(getQueueCountResult, submit_station['train_no']))
                 self.ticket_black_list[submit_station['train_no']] = datetime.datetime.now()
         elif "messages" in getQueueCountResult and getQueueCountResult["messages"]:
-            print(u"排队异常，错误信息：{0}, 将此列车 {1}加入小黑屋".format(getQueueCountResult["messages"][0], submit_station['train_no']))
+            print("排队异常，错误信息：{0}, 将此列车 {1}加入小黑屋".format(getQueueCountResult["messages"][0], submit_station['train_no']))
             self.ticket_black_list[submit_station['train_no']] = datetime.datetime.now()
         else:
             if "validateMessages" in getQueueCountResult and getQueueCountResult["validateMessages"]:
                 print(str(getQueueCountResult["validateMessages"]))
                 self.ticket_black_list[submit_station['train_no']] = datetime.datetime.now()
             else:
-                print(u"未知错误 {0}".format("".join(getQueueCountResult)))
+                print("未知错误 {0}".format("".join(getQueueCountResult)))
         return False
 
     #  模拟提交订单
@@ -324,7 +324,7 @@ class Votes(object):
                 'oldPassengerStr': "".join(oldPassengerStr)}
         try:
             if is_node_code:
-                print(u"正在使用自动识别验证码功能")
+                print("正在使用自动识别验证码功能")
                 for i in range(3):
                     result = self._send(self.confUrl['codeImgByOrder'])
                     # 保存验证码图片到本地
@@ -344,14 +344,14 @@ class Votes(object):
                     }
                     fresult = self._send(self.confUrl["checkRandCodeAnsyn"], rand_data)  # 校验验证码是否正确
                     if  fresult['data']['msg'] == 'TRUE':
-                        print(u"验证码通过,正在提交订单")
+                        print("验证码通过,正在提交订单")
                         data['randCode'] = rand_code
                         break
                     else:
                         print (u"验证码有误, {0}次尝试重试".format(i+1))
-                print(u"验证码超过限定次数3次，放弃此次订票机会!")
+                print("验证码超过限定次数3次，放弃此次订票机会!")
             else:
-                print(u"不需要验证码")
+                print("不需要验证码")
             time.sleep(0.5)
             checkQueueOrderResult = self._send(self.confUrl["checkQueueOrderUrl"], data)
             if "status" in checkQueueOrderResult and checkQueueOrderResult["status"]:
@@ -446,7 +446,7 @@ class Votes(object):
                 if "message" in queryMyOrderNoCompleteResult and queryMyOrderNoCompleteResult["message"]:
                     print(queryMyOrderNoCompleteResult["message"])
         else:
-            print(u"接口 {0} 无响应".format(self.confUrl["queryMyOrderNoCompleteUrl"]))
+            print("接口 {0} 无响应".format(self.confUrl["queryMyOrderNoCompleteUrl"]))
         return False
 
     # 取消订单

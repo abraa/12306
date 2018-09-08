@@ -72,7 +72,7 @@ def get_rand_code(is_auto_code, file_path=None):
             rc = RClient(configs['ruokuai_account']["username"], configs['ruokuai_account']["pwd"])
             im = open(file_path, 'rb').read()
             Result = rc.rk_create(im, 6113)
-			print()
+			print(Result["Result"])
             if "Result" in Result:
                 return codexy(offset_str=",".join(list(Result["Result"])), is_raw_input=False)
             else:
@@ -131,7 +131,7 @@ def codexy(offset_str=None, is_raw_input=True):
         post.append(offsetsX)
         post.append(offsetsY)
     randCode = str(post).replace(']', '').replace('[', '').replace("'", '').replace(' ', '')
-    print(u"验证码识别坐标为{0}".format(randCode))
+    print("验证码识别坐标为{0}".format(randCode))
     return randCode
 
 
