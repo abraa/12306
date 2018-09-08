@@ -74,9 +74,12 @@ class Votes(object):
                 print("下载验证码成功")
                 open(img_path, 'wb').write(result)
             except OSError as e:
+				print('OSError:')
                 print(e)
+				exit();
             # 识别验证码图片
             rand_code = my_util.get_rand_code(self.configs['is_auto_code'], file_path=img_path)
+			print(rand_code)
             # auth
             self._send(self.confUrl['auth'], data={'appid': "otn"})
             # 调用登录接口登录
@@ -348,7 +351,7 @@ class Votes(object):
                         data['randCode'] = rand_code
                         break
                     else:
-                        print (u"验证码有误, {0}次尝试重试".format(i+1))
+                        print ("验证码有误, {0}次尝试重试".format(i+1))
                 print("验证码超过限定次数3次，放弃此次订票机会!")
             else:
                 print("不需要验证码")
@@ -630,7 +633,7 @@ class Votes(object):
             uamauthclientResult = self._send(self.confUrl["uamauthclient"], data)
             if uamauthclientResult:
                 if "result_code" in uamauthclientResult and uamauthclientResult["result_code"] == 0:
-                    print("欢迎 {} 登录".format(uamauthclientResult["username"]))
+                    print("欢迎 {0} 登录".format(uamauthclientResult["username"]))
                     return True
                 else:
                     return False
