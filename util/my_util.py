@@ -72,6 +72,7 @@ def get_rand_code(is_auto_code, file_path=None):
             rc = RClient(configs['ruokuai_account']["username"], configs['ruokuai_account']["pwd"])
             im = open(file_path, 'rb').read()
             Result = rc.rk_create(im, 6113)
+			print()
             if "Result" in Result:
                 return codexy(offset_str=",".join(list(Result["Result"])), is_raw_input=False)
             else:
@@ -102,23 +103,23 @@ def codexy(offset_str=None, is_raw_input=True):
     offsetsY = 0  # 选择的答案的top值
     for ofset in select:
         if ofset == '1':
-            offsetsY = 46
-            offsetsX = 42
+            offsetsY = 44
+            offsetsX = 44
         elif ofset == '2':
-            offsetsY = 46
+            offsetsY = 45
             offsetsX = 105
         elif ofset == '3':
-            offsetsY = 45
-            offsetsX = 184
+            offsetsY = 46
+            offsetsX = 174
         elif ofset == '4':
-            offsetsY = 48
-            offsetsX = 256
+            offsetsY = 43
+            offsetsX = 250
         elif ofset == '5':
-            offsetsY = 36
-            offsetsX = 117
+            offsetsY = 109
+            offsetsX = 46
         elif ofset == '6':
             offsetsY = 112
-            offsetsX = 115
+            offsetsX = 110
         elif ofset == '7':
             offsetsY = 114
             offsetsX = 181
