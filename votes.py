@@ -74,12 +74,12 @@ class Votes(object):
                 print("下载验证码成功")
                 open(img_path, 'wb').write(result)
             except OSError as e:
-				print('OSError:')
+                print('OSError:')
                 print(e)
-				exit();
+                exit();
             # 识别验证码图片
             rand_code = my_util.get_rand_code(self.configs['is_auto_code'], file_path=img_path)
-			print(rand_code)
+            print(rand_code)
             # auth
             self._send(self.confUrl['auth'], data={'appid': "otn"})
             # 调用登录接口登录
