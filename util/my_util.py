@@ -74,6 +74,7 @@ def get_rand_code(is_auto_code, file_path=None):
             rc = RClient(configs['ruokuai_account']["username"], configs['ruokuai_account']["pwd"])
             im = open(file_path, 'rb').read()
             Result = rc.rk_create(im, 6113)
+            print(Result)
             if "Result" in Result:
                 return codexy(offset_str=",".join(list(Result["Result"])), is_raw_input=False)
             else:
@@ -105,7 +106,7 @@ def codexy(offset_str=None, is_raw_input=True):
     for ofset in select:
         if ofset == '1':
             offsetsY = 44
-            offsetsX = 44
+            offsetsX = 42
         elif ofset == '2':
             offsetsY = 45
             offsetsX = 105
@@ -116,8 +117,8 @@ def codexy(offset_str=None, is_raw_input=True):
             offsetsY = 43
             offsetsX = 250
         elif ofset == '5':
-            offsetsY = 109
-            offsetsX = 46
+            offsetsY = 117
+            offsetsX = 36
         elif ofset == '6':
             offsetsY = 112
             offsetsX = 110
