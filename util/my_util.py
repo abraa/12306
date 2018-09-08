@@ -8,7 +8,6 @@ from email.mime.text import MIMEText
 
 from PIL import Image
 
-from config.ticketConf import configs
 from exception.PassengerUserException import PassengerUserException
 from util import httpClient
 from util.ruokuai import RClient
@@ -223,7 +222,3 @@ def send_email(to_email, subject, content, configs, from_email=None):
     except smtplib.SMTPException:
         print("Error: 无法发送邮件")
 
-
-send_email(configs['to_email'], '订票成功',
-                                   "恭喜您订票成功，订单号为：{0}, 请立即打开浏览器登录12306，访问‘未完成订单’，在30分钟内完成支付！".format(1),
-                                   configs['email_conf'])
