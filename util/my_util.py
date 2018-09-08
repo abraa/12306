@@ -68,7 +68,7 @@ def get_rand_code(is_auto_code, file_path=None):
     try:
         # 是否自动登录 -- 自动打码
         if is_auto_code:
-			print('is_auto_code')
+            print('is_auto_code')
             # 调用接口返回验证码值 (Ruokuai接口)
             rc = RClient(configs['ruokuai_account']["username"], configs['ruokuai_account']["pwd"])
             im = open(file_path, 'rb').read()
